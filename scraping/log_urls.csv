@@ -1,0 +1,2 @@
+id;project;connector_type;t;delta_t;url;redirect_url;response_size;response_code;success;error
+0;urls_get;requests;1598343075.7693043;-0.13773870468139648;https://ekstrabladet.dk/find/?g=true&q=a;https://ekstrabladet.dk/find/?g=true&q=a;270303;200;True;
