@@ -7,7 +7,7 @@ import time
 import numpy as np
 import datetime
 import pytest
-logfile = 'log.csv'## name your log file.
+logfile = 'log.csv'## name your log file. c
 connector = scraping_class.Connector(logfile)
 
 from multiprocessing import Queue, cpu_count
