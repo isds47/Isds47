@@ -1,2 +1,7 @@
 id;project;connector_type;t;delta_t;url;redirect_url;response_size;response_code;success;error
 0;urls_get;requests;1598343075.7693043;-0.13773870468139648;https://ekstrabladet.dk/find/?g=true&q=a;https://ekstrabladet.dk/find/?g=true&q=a;270303;200;True;
+1;urls_get;requests;1598358152.2281523;-0.404097318649292;https://ekstrabladet.dk/find/?g=true&q=a;https://ekstrabladet.dk/find/?g=true&q=a;271063;200;True;
+2;urls_get;requests;1598358172.6433105;-0.10808205604553223;https://ekstrabladet.dk/find/?g=true&q=a;https://ekstrabladet.dk/find/?g=true&q=a;271081;200;True;
+3;urls_get;requests;1598358179.2447548;-0.07679390907287598;https://ekstrabladet.dk/find/?g=true&q=a;https://ekstrabladet.dk/find/?g=true&q=a;271081;200;True;
+4;urls_get;requests;1598358181.261676;-0.08317947387695312;https://ekstrabladet.dk/find/?g=true&q=a;https://ekstrabladet.dk/find/?g=true&q=a;271081;200;True;
+5;urls_get;requests;1598358590.5200932;-0.06803345680236816;https://ekstrabladet.dk/find/?g=true&q=a;https://ekstrabladet.dk/find/?g=true&q=a;270894;200;True;

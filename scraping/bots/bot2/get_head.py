@@ -7,7 +7,8 @@ import time
 import numpy as np
 import datetime
 import pytest
-logfile = 'log.csv'## name your log file. c
+from connector import Connector
+logfile = 'log.csv'## name your log file. 
 connector = scraping_class.Connector(logfile)
 
 from multiprocessing import Queue, cpu_count
@@ -31,23 +32,36 @@ import time
 from bs4 import BeautifulSoup
 from selenium.webdriver.common.keys import Keys
 
+# start chrome driver
+dirname = os.getcwd()
+path = os.path.join(dirname, 'chromedriver')
+driver = webdriver.Chrome(executable_path=path)
+
 '''
 Scrape headlines, number of comments, and time.
 '''
-def get_head(url_list, n):
-    i = 0
+def get_head(url_list):
+    #i = 0
     list1 = []
-    dirname = os.getcwd()
-    path = os.path.join(dirname, 'chromedriver')
-    driver = webdriver.Chrome(executable_path=path)
     for url in url_list:
+
+        # log and header
+        headers = {'email': 'smg158@alumni.ku.dk', 'name': 'Jonathan Isaksen', 'message': 'Students from university of Copenhagen - doing a project on machine learning'}
+        connector = Connector('log_get_head.csv')
+        # to save log not used by selenium
+        response,call_id = connector.get(url, 'urls_get')
+        # sending headers, as we don't think connectors can send headers.
+        requests.get(url, headers=headers)
+
+
+        
         no_comments = False
         data_list = []
-        i +=1
-        if i%100 == 0:
-            print(f'{i} out of {len(url_list)}')
-        if i == n: # break after n articles
-            break
+        #i +=1
+        #if i%100 == 0:
+        #    print(f'{i} out of {len(url_list)}')
+        #if i == n: # break after n articles
+        #    break
 
         data_list.append(url) # save url to df
         driver.get(url) # open the current url
