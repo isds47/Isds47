@@ -51,6 +51,8 @@ n = len(data['set'])
 if n%2 !=0:
     n -= 1
 n1 = int(n/2)
+n1 = 50
+n = 100
 
 data['set'][:n1] = 'test'
 data['set'][n1:n] = 'train'
@@ -72,7 +74,7 @@ param_grid_ols = {
             'pol__degree': [1,2,3]
              }
 
-search_ols = GridSearchCV(pipeline_ols, param_grid_ols, scoring='neg_mean_squared_error', cv=3, verbose=10, n_jobs = -1)
+search_ols = GridSearchCV(pipeline_ols, param_grid_ols, scoring='neg_mean_squared_error', cv=3, verbose=10, n_jobs = 8)
 
 search_ols.fit(df_train.x_cat.values, df_train.comments.values)
 #search_ols.fit(df_train.x_cat.values.reshape(-1,1), df_train.comments.values)
@@ -80,8 +82,8 @@ search_ols.fit(df_train.x_cat.values, df_train.comments.values)
 print('Best parameter set: %s ' % search_ols.best_params_)
 print('Best mse: %s ' % search_ols.best_score_)
 
-train_preds_ols = search_ols.predict(df_train.x_cat.values.reshape(-1,1))
-test_preds_ols = search_ols.predict(df_test.x_cat.values.reshape(-1,1))
+train_preds_ols = search_ols.predict(df_train.x_cat.values)
+test_preds_ols = search_ols.predict(df_test.x_cat.values)
 print('mse = ' + str(mse(df_test.comments.values, test_preds_ols)))
 print("training accuracy:", np.mean([(np.round(train_preds_ols,0)==df_train.comments.values)]))
 print("testing accuracy:", np.mean([(np.round(test_preds_ols,0)==df_test.comments.values)]))
