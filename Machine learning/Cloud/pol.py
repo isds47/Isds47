@@ -32,42 +32,58 @@ from sklearn.model_selection import GridSearchCV
 
 
 # load data
-data = pd.read_csv('no_words.csv')
+data = pd.read_csv('part2.csv')
 data = data[data['title'].notna()]
 data = data.reset_index()
-
+print(len(data))
 data['set'] = 'hi'
 
-data['set'][:1000] = 'test'
-data['set'][1000:2000] = 'train'
+data['x_cat'] = data['url'].str.replace('https://ekstrabladet.dk/nyheder/','')
+data['x_cat'] = data['x_cat'].str.replace('https://ekstrabladet.dk/','')
+data['x_cat'] = data['x_cat'].apply(lambda x: x.split('/')[0])
+
+len_title = []
+for i in data['title']:
+    len_title.append(len(i))
+data['len_title'] = pd.DataFrame(data=len_title)
+
+n = len(data['set'])
+if n%2 !=0:
+    n -= 1
+n1 = int(n/2)
+
+data['set'][:n1] = 'test'
+data['set'][n1:n] = 'train'
 
 df_train = data[data.set=="train"]
 df_test = data[data.set=="test"]
 lambdas = np.logspace(-4, 4, 10)
 
-pipeline_las = Pipeline([
+pipeline_ols = Pipeline([
     ('vect', CountVectorizer()),
     #('tfidf', TfidfTransformer()),
     ('pol', PolynomialFeatures(include_bias=True)),
-    ('las', Lasso(random_state=1, max_iter=10000))
-    #('clf', LinearRegression())
-    #('stanscal', RobustScaler(with_centering=False))
+    ('clf', LinearRegression()),
 ])
-pipeline_las.get_params().keys()
 
-param_grid_las = {'pol__degree': [1,2,3],
-                'las__alpha': lambdas}
+param_grid_ols = {
+    "vect__ngram_range": [(1,1), (1,2), (1,3), (1,4)],
+             #"tfidf__use_idf": [True, False]
+            'pol__degree': [1,2,3]
+             }
 
-search_las = GridSearchCV(pipeline_las, param_grid_las, scoring='neg_mean_squared_error', cv=3, verbose=10, n_jobs = 12)
+search_ols = GridSearchCV(pipeline_ols, param_grid_ols, scoring='neg_mean_squared_error', cv=3, verbose=10, n_jobs = -1)
 
-search_las.fit(df_train.proc_title.values, df_train.comments.values)
+search_ols.fit(df_train.x_cat.values, df_train.comments.values)
+#search_ols.fit(df_train.x_cat.values.reshape(-1,1), df_train.comments.values)
 
-print('Best parameter set: %s ' % search_las.best_params_)
-print('Best mse: %s ' % search_las.best_score_)
+print('Best parameter set: %s ' % search_ols.best_params_)
+print('Best mse: %s ' % search_ols.best_score_)
 
-train_preds_las = search_las.predict(df_train.title.values)
-test_preds_las = search_las.predict(df_test.title.values)
-print("training accuracy:", np.mean([(np.round(train_preds_las,0)==df_train.comments.values)]))
-print("testing accuracy:", np.mean([(np.round(test_preds_las,0)==df_test.comments.values)]))
+train_preds_ols = search_ols.predict(df_train.x_cat.values.reshape(-1,1))
+test_preds_ols = search_ols.predict(df_test.x_cat.values.reshape(-1,1))
+print('mse = ' + str(mse(df_test.comments.values, test_preds_ols)))
+print("training accuracy:", np.mean([(np.round(train_preds_ols,0)==df_train.comments.values)]))
+print("testing accuracy:", np.mean([(np.round(test_preds_ols,0)==df_test.comments.values)]))
 
-joblib.dump(search_las, 'cloud_las.pkl')
+joblib.dump(search_ols, 'cloud_ols.pkl')
