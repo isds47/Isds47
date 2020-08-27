@@ -51,8 +51,6 @@ n = len(data['set'])
 if n%2 !=0:
     n -= 1
 n1 = int(n/2)
-n1 = 50
-n = 100
 
 data['set'][:n1] = 'test'
 data['set'][n1:n] = 'train'
