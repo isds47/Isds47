@@ -2,6 +2,7 @@
 
 - The -all-words ipynb runs on the whole dataset while the other runs on the dateset with high frequency words (Feature 1).
 - The Modelvalidation.ipynb runs models without gridsearchCV we ended up not using it in favour of gridsearchCV.
+- it is possible to run the models on a google cloud server by adjusting the .py files in the cloud folder and uploading to the server.
 
 ### Gridsearch
 - 3 models
