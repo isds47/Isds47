@@ -1,0 +1,11 @@
+## Machine Learning
+
+- The -all-words ipynb runs on the whole dataset while the other runs on the dateset with high frequency words (Feature 1).
+- The Modelvalidation.ipynb runs models without gridsearchCV we ended up not using it in favour of gridsearchCV.
+
+### Gridsearch
+- 3 models
+    1. OLS
+    2. LASSO
+    3. Elastic net
+- saves the results from the 3 models and creates validation curves, learning curves and calculates the accuracy.
